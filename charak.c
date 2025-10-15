@@ -1,5 +1,6 @@
 #include <stdio.h>
-#include <conio.h>
+#include <unistd.h>
+#include <ncurses.h>
 #include <time.h>
 #include <stdlib.h>
 #include <math.h>
@@ -52,7 +53,7 @@ double point_from_circle(Vector circ_mid, double radius, Vector point, bool full
 }
 
 void clear_screen() {
-    printf("\e[1;1H\e[2J");
+    clear();
 }
 
 void insert_line(int enviroment2d[WIDTH][HEIGHT], Vector start, Vector end, double thickness, int filler) {
@@ -136,7 +137,7 @@ void playerMoved(int enviroment[WIDTH][HEIGHT], Vector *player_pos, Vector *new_
 
 void render(int enviroment2d[WIDTH][HEIGHT], int score) {
     clear_screen();
-    printf("Score: %d\n", score);
+    mvprintw(0, 0, "Score: %d\n", score);
     for(int y = 0; y < HEIGHT; y++)
     {
         for(int x = 0; x < WIDTH; x++)
@@ -144,26 +145,26 @@ void render(int enviroment2d[WIDTH][HEIGHT], int score) {
             switch (enviroment2d[x][y])
             {
             case 0:
-                putchar(' ');
+                addch(' ');
                 break;
 
             case 1:
-                putchar('x');
+                addch('x');
                 break;
 
             case 2:
-                putchar('o');
+                addch('o');
                 break;
 
             case 5:
-                putchar(178); //wall
+                addch('#'); //wall
                 break;
 
             default:
                 break;
             }
         }
-        putchar('\n');
+        addch('\n');
     }
 }
 
@@ -179,6 +180,12 @@ int main() {
     Vector player_pos = {50, 10};
     int score = 0;
     srand(time(NULL));  
+
+    initscr();            // start ncurses mode
+    noecho();             // don't echo pressed keys
+    cbreak();             // disable line buffering
+    nodelay(stdscr, TRUE); // make getch() non-blocking
+    keypad(stdscr, TRUE); // enable arrow keys
 
     int enviroment[WIDTH][HEIGHT] = {0};
 
@@ -196,9 +203,8 @@ int main() {
     printf("Press any key to start...");
 
     do {
-        if(kbhit()) {
-            char input = getch();
-            
+	char input = getch();
+        if(input != ERR) {
             Vector new_pos = player_pos;
             switch (input)
             {
@@ -215,7 +221,7 @@ int main() {
                     new_pos.y++;
                     break;
                 case 'x':
-                    clear_screen();
+                    endwin();
                     return 0;
                 default:
                     break;
@@ -226,6 +232,7 @@ int main() {
             
             playerMoved(enviroment, &player_pos, &new_pos, &score);
             render(enviroment, score);
+	    usleep(10000);
         }
     } while(1);
     return 0;
