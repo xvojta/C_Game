@@ -1,12 +1,78 @@
 #define _XOPEN_SOURCE 700
 
 #include <stdio.h>
-#include <unistd.h>
-#include <ncurses.h>
 #include <time.h>
 #include <stdlib.h>
 #include <math.h>
 #include <stdbool.h>
+
+//#define _WIN
+#ifdef _WIN
+#include <conio.h>
+#include <windows.h>
+
+#ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
+    #define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+#endif
+
+#define mvprintw(y, x, fmt, ...) printf(fmt, ##__VA_ARGS__)
+#define addch(ch) putchar(ch)
+
+void clear_screen() {
+    printf("\x1b[2J\x1b[H");
+}
+
+void graphic_init() {
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD dwMode = 0;
+    GetConsoleMode(hOut, &dwMode);
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hOut, dwMode);
+}
+
+
+int get_input(char *input) {
+    if(kbhit()) {
+        *input = getch();
+        return 1;
+    }
+    return 0;
+}    
+
+void  graphic_exit() {
+    clear_screen();
+}
+
+#else
+#include <unistd.h>
+#include <ncurses.h>
+
+void clear_screen() {
+    clear();
+}
+
+void graphic_init() {
+    initscr();            // start ncurses mode
+    noecho();             // don't echo pressed keys
+    cbreak();             // disable line buffering
+    nodelay(stdscr, TRUE); // make getch() non-blocking
+    keypad(stdscr, TRUE); // enable arrow keys
+}
+
+int get_input(char *input) {
+    char key_pressed = getch();
+    if(key_pressed != ERR) {
+        *input = key_pressed;
+        return 1;
+    }
+    return 0;
+}
+
+void  graphic_exit() {
+    endwin();
+}
+
+#endif
 
 #define WIDTH 100
 #define HEIGHT 20
@@ -82,13 +148,6 @@ double point_from_circle(Vector circ_mid, double radius, Vector point, bool full
     }
 
     return abs( points_dist(circ_mid, point) - radius );
-}
-
-/**
- * @brief Clear the screen
- */
-void clear_screen() {
-    clear();
 }
 
 /**
@@ -416,11 +475,7 @@ int main() {
     Vector spawn_points[NUM_LVLS];
     srand(time(NULL));  
 
-    initscr();            // start ncurses mode
-    noecho();             // don't echo pressed keys
-    cbreak();             // disable line buffering
-    nodelay(stdscr, TRUE); // make getch() non-blocking
-    keypad(stdscr, TRUE); // enable arrow keys
+    graphic_init();
 
     int enviroment[NUM_LVLS][WIDTH][HEIGHT] = {0};
 
@@ -429,8 +484,8 @@ int main() {
     mvprintw(0, 0, "Press any key to start...");
 
     do {
-	char input = getch();
-        if(input != ERR) {
+        char input;
+        if(get_input(&input)) {
             Vector new_pos = player_pos;
             switch (input)
             {
@@ -447,7 +502,7 @@ int main() {
                     new_pos.y++;
                     break;
                 case 'x':
-                    endwin();
+                    graphic_exit();
                     return 0;
                 default:
                     break;
