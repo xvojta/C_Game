@@ -12,6 +12,8 @@ cc -std=c11 -Wall -Wextra charak.c -lm -lncurses -ltinfo -o charak
 
 - Windows (e.g., MinGW)
 
+First, you will need a c-compiler. I recommend gcc (see [this tutorial](https://phoenixnap.com/kb/install-gcc-windows))
+
 Before compiling on Windows, open `charak.c` and uncomment the line near the top:
 
 ```c
