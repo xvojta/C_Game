@@ -18,10 +18,16 @@
 #define mvprintw(y, x, fmt, ...) printf(fmt, ##__VA_ARGS__)
 #define addch(ch) putchar(ch)
 
+/**
+ * @brief Clear the console screen
+ */
 void clear_screen() {
     printf("\x1b[2J\x1b[H");
 }
 
+/**
+ * @brief Initialize graphics mode
+ */
 void graphic_init() {
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     DWORD dwMode = 0;
@@ -30,7 +36,12 @@ void graphic_init() {
     SetConsoleMode(hOut, dwMode);
 }
 
-
+/**
+ * @brief Get user input if available
+ * 
+ * @param input Pointer to store the input character
+ * @return int 1 if input was received, 0 otherwise
+ */
 int get_input(char *input) {
     if(kbhit()) {
         *input = getch();
@@ -39,6 +50,9 @@ int get_input(char *input) {
     return 0;
 }    
 
+/**
+ * @brief Exit graphics mode
+ */
 void  graphic_exit() {
     clear_screen();
 }
@@ -47,10 +61,16 @@ void  graphic_exit() {
 #include <unistd.h>
 #include <ncurses.h>
 
+/**
+ * @brief Clear the console screen
+ */
 void clear_screen() {
     clear();
 }
 
+/**
+ * @brief Initialize graphics mode
+ */
 void graphic_init() {
     initscr();            // start ncurses mode
     noecho();             // don't echo pressed keys
@@ -59,6 +79,12 @@ void graphic_init() {
     keypad(stdscr, TRUE); // enable arrow keys
 }
 
+/**
+ * @brief Get user input if available
+ * 
+ * @param input Pointer to store the input character
+ * @return int 1 if input was received, 0 otherwise
+ */
 int get_input(char *input) {
     char key_pressed = getch();
     if(key_pressed != ERR) {
@@ -68,6 +94,9 @@ int get_input(char *input) {
     return 0;
 }
 
+/**
+ * @brief Exit graphics mode
+ */
 void  graphic_exit() {
     endwin();
 }
