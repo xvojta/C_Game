@@ -456,6 +456,18 @@ void cpy_enviroment(int cpy_to[WIDTH][HEIGHT], int cpy_from[WIDTH][HEIGHT]) {
 }
 
 /**
+ * @brief Draw the outer border for a level
+ * 
+ * @param enviroment2d 2D array representing the environment
+ */
+void draw_level_border(int enviroment2d[WIDTH][HEIGHT]) {
+    draw_line(enviroment2d, (Vector){0, 0}, (Vector){WIDTH - 1, 0}, 1.0);
+    draw_line(enviroment2d, (Vector){WIDTH - 1, 0}, (Vector){WIDTH - 1, HEIGHT - 1}, 1.0);
+    draw_line(enviroment2d, (Vector){0, HEIGHT - 1}, (Vector){WIDTH - 1, HEIGHT - 1}, 1.0);
+    draw_line(enviroment2d, (Vector){0, 0}, (Vector){0, HEIGHT - 1}, 1.0);
+}
+
+/**
  * @brief Initialize the environment with predefined levels and spawn points
  * 
  * @param enviroment 3D array representing the environment with multiple levels
@@ -464,10 +476,7 @@ void cpy_enviroment(int cpy_to[WIDTH][HEIGHT], int cpy_from[WIDTH][HEIGHT]) {
 void initialize_enviroment(int enviroment[NUM_LVLS][WIDTH][HEIGHT], Vector spawn_points[NUM_LVLS]) {
 
     //level 0
-    draw_line(enviroment[0], (Vector){0, 0}, (Vector){WIDTH - 1, 0}, 1.0);
-    draw_line(enviroment[0], (Vector){WIDTH - 1, 0}, (Vector){WIDTH - 1, HEIGHT - 1}, 1.0);
-    draw_line(enviroment[0], (Vector){0, HEIGHT - 1}, (Vector){WIDTH - 1, HEIGHT - 1}, 1.0);
-    draw_line(enviroment[0], (Vector){0, 0}, (Vector){0, HEIGHT - 1}, 1.0);
+    draw_level_border(enviroment[0]);
     draw_portal_line(enviroment[0], (Vector){WIDTH - 1, 8}, (Vector){WIDTH - 1, 12}, 1.0, 1);
 
     draw_line(enviroment[0], (Vector){70,0}, (Vector){70,8}, 1.0);
@@ -480,10 +489,7 @@ void initialize_enviroment(int enviroment[NUM_LVLS][WIDTH][HEIGHT], Vector spawn
     spawn_points[0] = (Vector){50, 10};
 
     //level 1
-    draw_line(enviroment[1], (Vector){0, 0}, (Vector){WIDTH - 1, 0}, 1.0);
-    draw_line(enviroment[1], (Vector){WIDTH - 1, 0}, (Vector){WIDTH - 1, HEIGHT - 1}, 1.0);
-    draw_line(enviroment[1], (Vector){0, HEIGHT - 1}, (Vector){WIDTH - 1, HEIGHT - 1}, 1.0);
-    draw_line(enviroment[1], (Vector){0, 0}, (Vector){0, HEIGHT - 1}, 1.0);
+    draw_level_border(enviroment[1]);
     draw_portal_line(enviroment[1], (Vector){0, 8}, (Vector){0, 12}, 1.0, 0);
     draw_portal_line(enviroment[1], (Vector){WIDTH - 1, 4}, (Vector){WIDTH - 1, 8}, 1.0, 2);
 
@@ -497,10 +503,7 @@ void initialize_enviroment(int enviroment[NUM_LVLS][WIDTH][HEIGHT], Vector spawn
     spawn_points[1] = (Vector){1, 9};
 
     //level 2
-    draw_line(enviroment[2], (Vector){0, 0}, (Vector){WIDTH - 1, 0}, 1.0);
-    draw_line(enviroment[2], (Vector){WIDTH - 1, 0}, (Vector){WIDTH - 1, HEIGHT - 1}, 1.0);
-    draw_line(enviroment[2], (Vector){0, HEIGHT - 1}, (Vector){WIDTH - 1, HEIGHT - 1}, 1.0);
-    draw_line(enviroment[2], (Vector){0, 0}, (Vector){0, HEIGHT - 1}, 1.0);
+    draw_level_border(enviroment[2]);
     draw_portal_line(enviroment[2], (Vector){0, 4}, (Vector){0, 8}, 1.0, 1);
     draw_portal_line(enviroment[2], (Vector){WIDTH - 1, 11}, (Vector){WIDTH - 1, 15}, 1.0, 3);
 
@@ -519,10 +522,7 @@ void initialize_enviroment(int enviroment[NUM_LVLS][WIDTH][HEIGHT], Vector spawn
     spawn_points[2] = (Vector){2, 5};
 
     //level 3
-    draw_line(enviroment[3], (Vector){0, 0}, (Vector){WIDTH - 1, 0}, 1.0);
-    draw_line(enviroment[3], (Vector){WIDTH - 1, 0}, (Vector){WIDTH - 1, HEIGHT - 1}, 1.0);
-    draw_line(enviroment[3], (Vector){0, HEIGHT - 1}, (Vector){WIDTH - 1, HEIGHT - 1}, 1.0);
-    draw_line(enviroment[3], (Vector){0, 0}, (Vector){0, HEIGHT - 1}, 1.0);
+    draw_level_border(enviroment[3]);
     draw_portal_line(enviroment[3], (Vector){0, 11}, (Vector){0, 15}, 1.0, 2);
 
     draw_circle(enviroment[3], (Vector){30, 10}, 6.0, 1.0, false);
