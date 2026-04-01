@@ -448,6 +448,9 @@ void render(int enviroment2d[WIDTH][HEIGHT], int score, int keys) {
         }
         addch('\n');
     }
+#ifndef _WIN
+    refresh();
+#endif
 }
 
 /**
@@ -551,7 +554,7 @@ int main() {
     Vector player_pos = {50, 10};
     int score = 0;
     int level = 0;
-    int keys_collected = 0;
+    int keys_held = 0;
     Vector spawn_points[NUM_LVLS];
     srand(time(NULL));  
 
@@ -591,11 +594,11 @@ int main() {
             //cpy_enviroment(rend_env, enviroment);
 
             int new_level;
-            int event = playerMoved(enviroment[level], &player_pos, &new_pos, &score, &keys_collected, &new_level);
+            int event = playerMoved(enviroment[level], &player_pos, &new_pos, &score, &keys_held, &new_level);
             if(event == 1) {
                 change_level(enviroment, &new_level, &level, &player_pos, spawn_points);
             }
-            render(enviroment[level], score, keys_collected);
+            render(enviroment[level], score, keys_held);
 	    //usleep(10000);
         }
     } while(1);
