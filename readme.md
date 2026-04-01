@@ -23,7 +23,7 @@ Before compiling on Windows, open `charak.c` and uncomment the line near the top
 Then build:
 
 ```sh
-gcc -std=c11 -Wall -Wextra charak.c -o charak
+gcc -std=c11 -Wall -Wextra charak.c -o charak -lm -lncurses
 ```
 
 Notes:
