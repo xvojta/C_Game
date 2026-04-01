@@ -107,7 +107,7 @@ void  graphic_exit() {
 #define HEIGHT 20
 #define HGH_DIST 2.0
 #define LVL_PREFIX 100
-#define NUM_LVLS 2
+#define NUM_LVLS 4
 
 typedef struct {
     int x;
@@ -302,8 +302,8 @@ void remove_circle(int enviroment2d[WIDTH][HEIGHT], Vector mid, double radius, d
  */
 void random_spawn(int enviroment[WIDTH][HEIGHT], int max_tries, int filler) {
     for(int i = 0; i < max_tries; i++) {
-        int rand_x = rand() % 101;
-        int rand_y = rand() % 21;
+        int rand_x = rand() % WIDTH;
+        int rand_y = rand() % HEIGHT;
         if(enviroment[rand_x][rand_y] == 0) {
             enviroment[rand_x][rand_y] = filler;
             return;
@@ -485,6 +485,7 @@ void initialize_enviroment(int enviroment[NUM_LVLS][WIDTH][HEIGHT], Vector spawn
     draw_line(enviroment[1], (Vector){0, HEIGHT - 1}, (Vector){WIDTH - 1, HEIGHT - 1}, 1.0);
     draw_line(enviroment[1], (Vector){0, 0}, (Vector){0, HEIGHT - 1}, 1.0);
     draw_portal_line(enviroment[1], (Vector){0, 8}, (Vector){0, 12}, 1.0, 0);
+    draw_portal_line(enviroment[1], (Vector){WIDTH - 1, 4}, (Vector){WIDTH - 1, 8}, 1.0, 2);
 
     draw_line(enviroment[1], (Vector){70,0}, (Vector){70,8}, 1.0);
     draw_line(enviroment[1], (Vector){70,12}, (Vector){70,HEIGHT - 1}, 1.0);
@@ -494,6 +495,47 @@ void initialize_enviroment(int enviroment[NUM_LVLS][WIDTH][HEIGHT], Vector spawn
     spawn_key(enviroment[1]);
 
     spawn_points[1] = (Vector){1, 9};
+
+    //level 2
+    draw_line(enviroment[2], (Vector){0, 0}, (Vector){WIDTH - 1, 0}, 1.0);
+    draw_line(enviroment[2], (Vector){WIDTH - 1, 0}, (Vector){WIDTH - 1, HEIGHT - 1}, 1.0);
+    draw_line(enviroment[2], (Vector){0, HEIGHT - 1}, (Vector){WIDTH - 1, HEIGHT - 1}, 1.0);
+    draw_line(enviroment[2], (Vector){0, 0}, (Vector){0, HEIGHT - 1}, 1.0);
+    draw_portal_line(enviroment[2], (Vector){0, 4}, (Vector){0, 8}, 1.0, 1);
+    draw_portal_line(enviroment[2], (Vector){WIDTH - 1, 11}, (Vector){WIDTH - 1, 15}, 1.0, 3);
+
+    draw_line(enviroment[2], (Vector){20, 4}, (Vector){80, 4}, 1.0);
+    draw_line(enviroment[2], (Vector){20, 15}, (Vector){80, 15}, 1.0);
+    draw_line(enviroment[2], (Vector){20, 4}, (Vector){20, 15}, 1.0);
+    draw_line(enviroment[2], (Vector){80, 4}, (Vector){80, 15}, 1.0);
+    draw_line(enviroment[2], (Vector){35, 4}, (Vector){35, 10}, 1.0);
+    draw_line(enviroment[2], (Vector){65, 9}, (Vector){65, 15}, 1.0);
+    remove_line(enviroment[2], (Vector){48, 4}, (Vector){52, 4}, 1.0);
+    remove_line(enviroment[2], (Vector){48, 15}, (Vector){52, 15}, 1.0);
+    spawn_coin(enviroment[2]);
+    spawn_coin(enviroment[2]);
+    spawn_chest(enviroment[2]);
+
+    spawn_points[2] = (Vector){2, 5};
+
+    //level 3
+    draw_line(enviroment[3], (Vector){0, 0}, (Vector){WIDTH - 1, 0}, 1.0);
+    draw_line(enviroment[3], (Vector){WIDTH - 1, 0}, (Vector){WIDTH - 1, HEIGHT - 1}, 1.0);
+    draw_line(enviroment[3], (Vector){0, HEIGHT - 1}, (Vector){WIDTH - 1, HEIGHT - 1}, 1.0);
+    draw_line(enviroment[3], (Vector){0, 0}, (Vector){0, HEIGHT - 1}, 1.0);
+    draw_portal_line(enviroment[3], (Vector){0, 11}, (Vector){0, 15}, 1.0, 2);
+
+    draw_circle(enviroment[3], (Vector){30, 10}, 6.0, 1.0, false);
+    draw_circle(enviroment[3], (Vector){70, 10}, 6.0, 1.0, false);
+    draw_line(enviroment[3], (Vector){36, 10}, (Vector){64, 10}, 1.0);
+    draw_line(enviroment[3], (Vector){50, 2}, (Vector){50, 18}, 1.0);
+    remove_line(enviroment[3], (Vector){50, 8}, (Vector){50, 12}, 1.0);
+    remove_line(enviroment[3], (Vector){44, 10}, (Vector){56, 10}, 1.0);
+    spawn_coin(enviroment[3]);
+    spawn_coin(enviroment[3]);
+    spawn_key(enviroment[3]);
+
+    spawn_points[3] = (Vector){98, 13};
 }
 
 int main() {
@@ -550,4 +592,3 @@ int main() {
     } while(1);
     return 0;
 }
-
